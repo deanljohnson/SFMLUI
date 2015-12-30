@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SFML.Graphics;
@@ -12,7 +13,7 @@ namespace SFMLUI
         public override bool HasKeyboardFocus
         {
             get { return Children.Any(c => c.HasKeyboardFocus); }
-            set { }
+            set { throw new InvalidOperationException("UIPanel's cannot have KeyboardFocus set"); }
         }
 
         protected List<UIElement> Children { get; set; }
@@ -78,8 +79,8 @@ namespace SFMLUI
 
             var lowestX = childsBounds.Min(b => b.Left);
             var lowestY = childsBounds.Min(b => b.Top);
-            var highestX = childsBounds.Max(b => b.Left + b.Width);
-            var highestY = childsBounds.Max(b => b.Top + b.Height);
+            var highestX = childsBounds.Max(b => b.Right());
+            var highestY = childsBounds.Max(b => b.Bottom());
 
             var localRect = new FloatRect(lowestX, lowestY, (highestX - lowestX), (highestY - lowestY));
 

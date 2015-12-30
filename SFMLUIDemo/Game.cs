@@ -20,6 +20,7 @@ namespace SFMLUIDemo
         private static IntRect m_NormalRect { get; set; }
         private static IntRect m_HoverRect { get; set; }
         private static IntRect m_ClickRect { get; set; }
+        private const int BORDER_SIZE = 10;
 
         public static RenderWindow Window { get; private set; }
 
@@ -39,6 +40,14 @@ namespace SFMLUIDemo
 
             m_UI = new UIBase();
 
+            var expandingFrame = new UIExpandingFrame(new Vector2f(100, 100), m_TestTexture, 
+                new IntRect(0, 0, BORDER_SIZE, BORDER_SIZE), //corner 
+                new IntRect(BORDER_SIZE, 0, m_NormalRect.Width - (BORDER_SIZE * 2), BORDER_SIZE), //side
+                new IntRect(BORDER_SIZE, BORDER_SIZE, m_NormalRect.Width - (BORDER_SIZE * 2), m_NormalRect.Height - (BORDER_SIZE * 2)))//fill
+            {
+                Position = new Vector2f(10, 10)
+            };
+
             var icon = new UIIcon(m_TestTexture, m_NormalRect);
             var iconCaption = new UICaption("Icon", font, 16, Color.Green);
             iconCaption.CenterOn(icon);
@@ -47,20 +56,31 @@ namespace SFMLUIDemo
                 HoverRect = m_HoverRect,
                 ClickRect = m_ClickRect
             };
-            button.StackOnBottom(icon);
+            button.StackOnBottom(icon, new Vector2f(0, 5));
             var buttonCaption = new UICaption("Button", font, 16, Color.Green);
             buttonCaption.CenterOn(button);
-            var textField = new UITextField(Window, new Vector2f(100, 20), Color.White, font, 16, Color.Green)
+
+            var captionedButton = new UICaptionedButton(m_TestTexture, m_NormalRect, "Captioned\nButton", font, 16, Color.Green)
+            {
+                HoverRect = m_HoverRect,
+                ClickRect = m_ClickRect
+            };
+            captionedButton.StackOnBottom(button, new Vector2f(0, 5));
+            
+            var textField = new UITextField(Window, new Vector2f(100, 20), new Color(240, 240, 240), font, 14, Color.Green)
             {
                 TextOffset = new Vector2f(0, -2)
             };
-            textField.StackOnBottom(button);
+            textField.StackOnBottom(captionedButton, new Vector2f(0, 5));
 
-            m_UI.Add(icon);
-            m_UI.Add(iconCaption);
-            m_UI.Add(button);
-            m_UI.Add(buttonCaption);
-            m_UI.Add(textField);
+            expandingFrame.Add(icon);
+            expandingFrame.Add(iconCaption);
+            expandingFrame.Add(button);
+            expandingFrame.Add(buttonCaption);
+            expandingFrame.Add(captionedButton);
+            expandingFrame.Add(textField);
+
+            m_UI.Add(expandingFrame);
 
             while (Window.IsOpen)
             {
@@ -90,7 +110,6 @@ namespace SFMLUIDemo
         {
             var size = new Vector2u(300, 100);
             var image = new Image(size.X, size.Y);
-            const int borderSize = 10;
             
             for (uint j = 0; j < size.Y; j++)
             {
@@ -98,8 +117,8 @@ namespace SFMLUIDemo
                 {
                     var color = Color.White;
 
-                    if (i < borderSize || i > (size.X / 3) - borderSize
-                        || j < borderSize || j > size.Y - borderSize)
+                    if (i < BORDER_SIZE || i > (size.X / 3) - BORDER_SIZE
+                        || j < BORDER_SIZE || j > size.Y - BORDER_SIZE)
                     {
                         color = new Color(200, 200, 200);
                     }
@@ -113,8 +132,8 @@ namespace SFMLUIDemo
                 {
                     var color = new Color(200, 200, 200);
 
-                    if (i < (size.X / 3) + borderSize || i > (size.X * 2 / 3) - borderSize
-                        || j < borderSize || j > size.Y - borderSize)
+                    if (i < (size.X / 3) + BORDER_SIZE || i > (size.X * 2 / 3) - BORDER_SIZE
+                        || j < BORDER_SIZE || j > size.Y - BORDER_SIZE)
                     {
                         color = new Color(150, 150, 150);
                     }
@@ -128,8 +147,8 @@ namespace SFMLUIDemo
                 {
                     var color = new Color(150, 150, 150);
 
-                    if (i < (size.X * 2 / 3) + borderSize || i > size.X - borderSize
-                        || j < borderSize || j > size.Y - borderSize)
+                    if (i < (size.X * 2 / 3) + BORDER_SIZE || i > size.X - BORDER_SIZE
+                        || j < BORDER_SIZE || j > size.Y - BORDER_SIZE)
                     {
                         color = new Color(100, 100, 100);
                     }

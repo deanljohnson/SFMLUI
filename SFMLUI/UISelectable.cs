@@ -36,7 +36,7 @@ namespace SFMLUI
                     return UnselectedHandleMouseClick(mousePos);
             }
 
-            throw new Exception("Unrecognized State");
+            throw new Exception($"Unrecognized State {State}");
         }
 
         protected abstract bool Contains(Vector2f pos);
@@ -48,11 +48,13 @@ namespace SFMLUI
             {
                 case SelectableState.Unselected:
                     OnUnselect?.Invoke(this);
-                    break;
+                    return;
                 case SelectableState.Selected:
                     OnSelect?.Invoke(this);
-                    break;
+                    return;
             }
+
+            throw new Exception($"Unrecognized State {State}");
         }
 
         protected bool SelectedHandleMouseClick(Vector2f mousePos)

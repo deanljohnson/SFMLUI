@@ -5,7 +5,6 @@ namespace SFMLUI
 {
     public class UICaptionedButton : UIButton
     {
-        public bool KeepCaptionCentered { get; set; }
         public UICaption Caption { get; set; }
 
         public UICaptionedButton(Texture texture, IntRect normalRect, UICaption caption)
@@ -23,11 +22,6 @@ namespace SFMLUI
 
         public override void Update()
         {
-            if (KeepCaptionCentered)
-            {
-                Caption.CenterOn(this);
-            }
-
             base.Update();
 
             Caption.Update();
