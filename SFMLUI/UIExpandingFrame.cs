@@ -14,14 +14,16 @@ namespace SFMLUI
         private float m_WidthScale { get; set; }
         private float m_HeightScale { get; set; }
         private Vector2f m_StartSize { get; set; }
+        private Vector2f m_Padding { get; set; }
 
-        public UIExpandingFrame(Vector2f startSize, Texture texture, IntRect corner, IntRect side, IntRect fill)
+        public UIExpandingFrame(Vector2f startSize, Vector2f padding, Texture texture, IntRect corner, IntRect side, IntRect fill)
         {
             m_CornerSprite = new Sprite(texture, corner);
             m_SideSprite = new Sprite(texture, side);
             m_FillSprite = new Sprite(texture, fill);
 
             m_StartSize = startSize;
+            m_Padding = padding;
 
             m_WidthScale = ((2 * corner.Width) + fill.Width) / startSize.X;
             m_HeightScale = ((2 * corner.Height) + fill.Height) / startSize.Y;
@@ -85,8 +87,8 @@ namespace SFMLUI
             m_FillSprite.Position = new Vector2f(cornerBounds.Width, cornerBounds.Height);
             target.Draw(m_FillSprite, states);
 
-            //Move the transform so that children are drawn within the fill area
-            states.Transform.Translate(cornerBounds.Width, cornerBounds.Height);
+            //Move the transform so that children are drawn within the fill area, with padding applied
+            states.Transform.Translate(cornerBounds.Width + m_Padding.X, cornerBounds.Height + m_Padding.Y);
 
             foreach (var child in Children.Where(c => c.Active))
             {
@@ -96,19 +98,21 @@ namespace SFMLUI
 
         public override bool HandleMouseMove(Vector2f mousePos)
         {
-            var baseResult = base.HandleMouseMove(mousePos);
+            var baseResult = base.HandleMouseMove(mousePos - m_Padding);
 
             if (baseResult) return true;
 
+            //Moving over the frame itself counts as handling the event
             return GetBounds().Contains(mousePos.X, mousePos.Y);
         }
 
         public override bool HandleMouseClick(Vector2f mousePos, Mouse.Button button)
         {
-            var baseResult = base.HandleMouseClick(mousePos, button);
+            var baseResult = base.HandleMouseClick(mousePos - m_Padding, button);
 
             if (baseResult) return true;
 
+            //Clicking on the frame itself counts as handling the event
             return GetBounds().Contains(mousePos.X, mousePos.Y);
         }
 
@@ -136,12 +140,17 @@ namespace SFMLUI
             var childsBounds = Children.Select(child => child.GetBounds()).ToList();
             var cornerBounds = m_CornerSprite.GetLocalBounds();
 
-            var lowestX = childsBounds.Min(b => b.Left) - cornerBounds.Width;
-            var lowestY = childsBounds.Min(b => b.Top) - cornerBounds.Height;
-            var highestX = childsBounds.Max(b => b.Right()) + cornerBounds.Width;
-            var highestY = childsBounds.Max(b => b.Bottom()) + cornerBounds.Height;
+            var lowestX = childsBounds.Min(b => b.Left);
+            var lowestY = childsBounds.Min(b => b.Top);
+            var highestX = childsBounds.Max(b => b.Right());
+            var highestY = childsBounds.Max(b => b.Bottom());
 
-            var localRect = new FloatRect(lowestX, lowestY, (highestX - lowestX), (highestY - lowestY));
+            var childBB = new FloatRect(lowestX, lowestY, highestX - lowestX, highestY - lowestY);
+            var totalPadding = new Vector2f(m_Padding.X + cornerBounds.Width, m_Padding.Y + cornerBounds.Height);
+
+            var localRect = new FloatRect(0, 0, childBB.Width + childBB.Left + (totalPadding.X * 2), childBB.Height + childBB.Top + (totalPadding.Y * 2));
+
+            //var localRect = new FloatRect(0, 0, ((m_Padding.X + cornerBounds.Width) * 2) + (highestX - 0), ((m_Padding.Y + cornerBounds.Height) * 2) + (highestY - 0));
 
             m_WidthScale = localRect.Width / m_StartSize.X;
             m_HeightScale = localRect.Height / m_StartSize.Y;

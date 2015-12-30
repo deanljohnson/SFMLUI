@@ -40,7 +40,7 @@ namespace SFMLUIDemo
 
             m_UI = new UIBase();
 
-            var expandingFrame = new UIExpandingFrame(new Vector2f(100, 100), m_TestTexture, 
+            var expandingFrame = new UIExpandingFrame(new Vector2f(100, 100), new Vector2f(10, 10), m_TestTexture, 
                 new IntRect(0, 0, BORDER_SIZE, BORDER_SIZE), //corner 
                 new IntRect(BORDER_SIZE, 0, m_NormalRect.Width - (BORDER_SIZE * 2), BORDER_SIZE), //side
                 new IntRect(BORDER_SIZE, BORDER_SIZE, m_NormalRect.Width - (BORDER_SIZE * 2), m_NormalRect.Height - (BORDER_SIZE * 2)))//fill
@@ -48,7 +48,7 @@ namespace SFMLUIDemo
                 Position = new Vector2f(10, 10)
             };
 
-            var icon = new UIIcon(m_TestTexture, m_NormalRect);
+            var icon = new UIIcon(m_TestTexture, m_NormalRect) { Position = new Vector2f(0, 0)};
             var iconCaption = new UICaption("Icon", font, 16, Color.Green);
             iconCaption.CenterOn(icon);
             var button = new UIButton(m_TestTexture, m_NormalRect)
@@ -57,6 +57,7 @@ namespace SFMLUIDemo
                 ClickRect = m_ClickRect
             };
             button.StackOnBottom(icon, new Vector2f(0, 5));
+            button.CenterHorizontally(icon);
             var buttonCaption = new UICaption("Button", font, 16, Color.Green);
             buttonCaption.CenterOn(button);
 
@@ -66,12 +67,13 @@ namespace SFMLUIDemo
                 ClickRect = m_ClickRect
             };
             captionedButton.StackOnBottom(button, new Vector2f(0, 5));
-            
+            captionedButton.CenterHorizontally(button);
             var textField = new UITextField(Window, new Vector2f(100, 20), new Color(240, 240, 240), font, 14, Color.Green)
             {
-                TextOffset = new Vector2f(0, -2)
+                TextOffset = new Vector2f(0, -1)
             };
             textField.StackOnBottom(captionedButton, new Vector2f(0, 5));
+            textField.CenterHorizontally(captionedButton);
 
             expandingFrame.Add(icon);
             expandingFrame.Add(iconCaption);
