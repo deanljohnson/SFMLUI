@@ -48,30 +48,27 @@ namespace SFMLUIDemo
                 Position = new Vector2f(10, 10)
             };
 
-            var icon = new UIIcon(m_TestTexture, m_NormalRect) { Position = new Vector2f(0, 0)};
-            var iconCaption = new UICaption("Icon", font, 16, Color.Green);
+            var icon = new UIIcon(m_TestTexture, m_NormalRect);
+            var iconCaption = new UICaption("Icon", font, 16, Color.Black);
             iconCaption.CenterOn(icon);
             var button = new UIButton(m_TestTexture, m_NormalRect)
             {
                 HoverRect = m_HoverRect,
-                ClickRect = m_ClickRect
+                ClickRect = m_ClickRect,
             };
-            button.StackOnBottom(icon, new Vector2f(0, 5));
-            button.CenterHorizontally(icon);
-            var buttonCaption = new UICaption("Button", font, 16, Color.Green);
+            button.StackOnRight(icon, new Vector2f(5, 0));
+            button.CenterVertically(icon);
+            var buttonCaption = new UICaption("Button", font, 16, Color.Black);
             buttonCaption.CenterOn(button);
 
-            var captionedButton = new UICaptionedButton(m_TestTexture, m_NormalRect, "Captioned\nButton", font, 16, Color.Green)
+            var captionedButton = new UICaptionedButton(m_TestTexture, m_NormalRect, "Captioned\nButton", font, 16, Color.Black)
             {
                 HoverRect = m_HoverRect,
                 ClickRect = m_ClickRect
             };
-            captionedButton.StackOnBottom(button, new Vector2f(0, 5));
-            captionedButton.CenterHorizontally(button);
-            var textField = new UITextField(Window, new Vector2f(100, 20), new Color(240, 240, 240), font, 14, Color.Green)
-            {
-                TextOffset = new Vector2f(0, -1)
-            };
+            captionedButton.StackOnBottom(icon, new Vector2f(0, 5));
+            captionedButton.CenterHorizontally(icon);
+            var textField = new UITextField(Window, new Vector2f(100, 20), new Color(240, 240, 240), font, 14, Color.Black);
             textField.StackOnBottom(captionedButton, new Vector2f(0, 5));
             textField.CenterHorizontally(captionedButton);
 

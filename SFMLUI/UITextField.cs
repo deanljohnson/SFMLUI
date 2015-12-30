@@ -39,16 +39,13 @@ namespace SFMLUI
             set { m_Caption.DisplayedText = value; }
         }
 
-        public Vector2f TextOffset
-        {
-            set { m_Caption.Position = value; }
-        }
-
         public Action OnGainKeyboardFocus { get; set; }
         public Action OnLoseKeyboardFocus { get; set; }
 
         private RectangleShape m_Box { get; }
         private UICaption m_Caption { get; }
+        private Sprite m_CaptionSprite { get; }
+        private RenderTexture m_CaptionRenderTexture { get; }
         private int m_CaretPosition { get; set; }
 
         public UITextField(Window window, Vector2f size, Color backgroundColor, Font font, uint fontSize,
@@ -58,10 +55,10 @@ namespace SFMLUI
             {
                 FillColor = backgroundColor
             };
+            m_CaptionRenderTexture = new RenderTexture((uint) size.X, (uint) size.Y);
+            m_CaptionSprite = new Sprite();
 
             m_Caption = new UICaption("", font, fontSize, fontColor);
-            m_Caption.AlignLefts(this);
-            m_Caption.CenterVertically(this, new Vector2f(0, -fontSize/2));
 
             //TODO: Remove the need to pass a window object around
             //Ideally a user would pass the desired text/keyPress events to the UI
@@ -76,7 +73,7 @@ namespace SFMLUI
         public override void Draw(RenderTarget target, RenderStates states)
         {
             //It's a code smell to have caret handling in a rendering method,
-            //but the alternative is much messier in this case
+            //but the only other way I thought to do this was much messier.
             if (HasKeyboardFocus)
             {
                 InsertCaret();
@@ -85,7 +82,14 @@ namespace SFMLUI
             states.Transform.Combine(Transform);
 
             target.Draw(m_Box, states);
-            target.Draw(m_Caption, states);
+
+            DrawCaptionToRenderTexture();
+
+            //Pull the Texture off of the RenderTexture, apply it to a Sprite, and render it to the RenderTarget
+            m_CaptionSprite.Texture = m_CaptionRenderTexture.Texture;
+            m_CaptionSprite.Scale = new Vector2f(1, -1); //I don't know why, but I need to flip the y-axis...
+            m_CaptionSprite.Position = new Vector2f(0, m_Box.Size.Y); //Because we flipped the axis, we need a translation
+            target.Draw(m_CaptionSprite, states);
 
             if (HasKeyboardFocus)
             {
@@ -124,6 +128,27 @@ namespace SFMLUI
         protected override bool Contains(Vector2f pos)
         {
             return GetBounds().Contains(pos.X, pos.Y);
+        }
+
+        private void DrawCaptionToRenderTexture()
+        {
+            //Find out where to move the Caption to display the proper piece
+            var capBounds = m_Caption.GetBounds();
+            var caretPos = m_Caption.FindCharacterPos(m_CaretPosition).X;
+            if (caretPos > m_CaptionRenderTexture.Size.X - capBounds.Left)
+            {
+                //BUG: When this happens during masking, the caret is not visible.
+                m_Caption.Position = new Vector2f(-caretPos + m_CaptionRenderTexture.Size.X, m_Caption.Position.Y);
+            }
+            if (caretPos < -capBounds.Left)
+            {
+                //BUG: When this happens during masking, while using backspace to delete characters, you cannot see what is being deleted
+                m_Caption.Position = new Vector2f(-caretPos, m_Caption.Position.Y);
+            }
+
+            //Draw the Caption to a RenderTexture so we can mask it
+            m_CaptionRenderTexture.Clear(Color.Transparent);
+            m_CaptionRenderTexture.Draw(m_Caption);
         }
 
         private void HandleTextEntered(object sender, TextEventArgs e)
@@ -176,7 +201,7 @@ namespace SFMLUI
 
         private void RemoveOneAtCaret()
         {
-            if (Text.Length > 0)
+            if (Text.Length > 0 && m_CaretPosition > 0)
             {
                 m_CaretPosition--;
                 Text = Text.Remove(m_CaretPosition, 1);

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -8,87 +7,94 @@ namespace SFMLUI
 {
     public class UIExpandingFrame : UIPanel
     {
-        private Sprite m_CornerSprite { get; }
-        private Sprite m_SideSprite { get; }
-        private Sprite m_FillSprite { get; }
+        private Sprite m_Sprite { get; }
+        private IntRect m_CornerRect { get; }
+        private IntRect m_SideRect { get; }
+        private IntRect m_FillRect { get; }
+
         private float m_WidthScale { get; set; }
         private float m_HeightScale { get; set; }
-        private Vector2f m_StartSize { get; set; }
-        private Vector2f m_Padding { get; set; }
+        private Vector2f m_StartSize { get; }
+        private Vector2f m_Padding { get; }
 
         public UIExpandingFrame(Vector2f startSize, Vector2f padding, Texture texture, IntRect corner, IntRect side, IntRect fill)
         {
-            m_CornerSprite = new Sprite(texture, corner);
-            m_SideSprite = new Sprite(texture, side);
-            m_FillSprite = new Sprite(texture, fill);
+            m_Sprite = new Sprite(texture);
+            m_CornerRect = corner;
+            m_SideRect = side;
+            m_FillRect = fill;
 
             m_StartSize = startSize;
             m_Padding = padding;
 
             m_WidthScale = ((2 * corner.Width) + fill.Width) / startSize.X;
             m_HeightScale = ((2 * corner.Height) + fill.Height) / startSize.Y;
-
-            /*m_WidthScale = (startSize.X - (2*corner.Width))/ fill.Width;
-            m_HeightScale = (startSize.Y - (2*corner.Width))/ fill.Width;*/
-            //We use width because we will be rotating the side
         }
 
-        //TODO: There are probably some ways to improve this method - ~14 new Vector2f's... inefficient
+        //TODO: There are probably some ways to improve this method - ~13 new Vector2f's... inefficient
         public override void Draw(RenderTarget target, RenderStates states)
         {
             states.Transform.Combine(Transform);
 
             var selfBounds = GetBounds();
-            var cornerBounds = m_CornerSprite.GetLocalBounds();
 
-            var desiredSideWidth = selfBounds.Width - (cornerBounds.Width*2);
-            var desiredSideHeight = selfBounds.Height - (cornerBounds.Height*2);
-            var sideWidthScale = desiredSideWidth / m_SideSprite.TextureRect.Width;
-            var sideHeightScale = desiredSideHeight / m_SideSprite.TextureRect.Width;//We use the sides width here because we rotate the sprite to draw the sides of the frame
+            var desiredSideWidth = selfBounds.Width - (m_CornerRect.Width*2);
+            var desiredSideHeight = selfBounds.Height - (m_CornerRect.Height*2);
+            var sideWidthScale = desiredSideWidth / m_SideRect.Width;
+            var sideHeightScale = desiredSideHeight / m_SideRect.Width;//We use the sides width here because we rotate the sprite to draw the sides of the frame
 
-            //TopLeft & Top
-            m_CornerSprite.Rotation = 0f;
-            m_CornerSprite.Position = new Vector2f(0, 0);
-            target.Draw(m_CornerSprite, states);
-            m_SideSprite.Rotation = 0f;
-            m_SideSprite.Scale = new Vector2f(sideWidthScale, 1f);
-            m_SideSprite.Position = new Vector2f(cornerBounds.Width, 0);
-            target.Draw(m_SideSprite, states);
+            //-----Corners-----//
+            m_Sprite.Scale = new Vector2f(1, 1);
+            m_Sprite.TextureRect = m_CornerRect;
+            //TopLeft
+            m_Sprite.Rotation = 0f;
+            m_Sprite.Position = new Vector2f(0, 0);
+            target.Draw(m_Sprite, states);
+            //TopRight
+            m_Sprite.Rotation = 90f;
+            m_Sprite.Position = new Vector2f(selfBounds.Width, 0);
+            target.Draw(m_Sprite, states);
+            //BottomRight
+            m_Sprite.Rotation = 180f;
+            m_Sprite.Position = new Vector2f(selfBounds.Width, selfBounds.Height);
+            target.Draw(m_Sprite, states);
+            //BottomLeft
+            m_Sprite.Rotation = 270f;
+            m_Sprite.Position = new Vector2f(0, selfBounds.Height);
+            target.Draw(m_Sprite, states);
 
-            //TopRight & Right
-            m_CornerSprite.Rotation = 90f;
-            m_CornerSprite.Position = new Vector2f(selfBounds.Width, 0);
-            target.Draw(m_CornerSprite, states);
-            m_SideSprite.Rotation = 90f;
-            m_SideSprite.Scale = new Vector2f(sideHeightScale, 1f);
-            m_SideSprite.Position = new Vector2f(selfBounds.Width, cornerBounds.Height);
-            target.Draw(m_SideSprite, states);
+            //----Top/Bottom-----//
+            m_Sprite.TextureRect = m_SideRect;
+            m_Sprite.Scale = new Vector2f(sideWidthScale, 1f);
+            //Top
+            m_Sprite.Rotation = 0f;
+            m_Sprite.Position = new Vector2f(m_CornerRect.Width, 0);
+            target.Draw(m_Sprite, states);
+            //Bottom
+            m_Sprite.Rotation = 180f;
+            m_Sprite.Position = new Vector2f(selfBounds.Width - m_CornerRect.Width, selfBounds.Height);
+            target.Draw(m_Sprite, states);
 
-            //BottomRight & Bottom
-            m_CornerSprite.Rotation = 180f;
-            m_CornerSprite.Position = new Vector2f(selfBounds.Width, selfBounds.Height);
-            target.Draw(m_CornerSprite, states);
-            m_SideSprite.Rotation = 180f;
-            m_SideSprite.Scale = new Vector2f(sideWidthScale, 1f);
-            m_SideSprite.Position = new Vector2f(selfBounds.Width - cornerBounds.Width, selfBounds.Height);
-            target.Draw(m_SideSprite, states);
+            //-----Left/Right-----//
+            m_Sprite.Scale = new Vector2f(sideHeightScale, 1f);
+            //Right
+            m_Sprite.Rotation = 90f;
+            m_Sprite.Position = new Vector2f(selfBounds.Width, m_CornerRect.Height);
+            target.Draw(m_Sprite, states);
+            //Left
+            m_Sprite.Rotation = 270f;
+            m_Sprite.Position = new Vector2f(0, selfBounds.Height - m_CornerRect.Height);
+            target.Draw(m_Sprite, states);
 
-            //BottomLeft & Left
-            m_CornerSprite.Rotation = 270f;
-            m_CornerSprite.Position = new Vector2f(0, selfBounds.Height);
-            target.Draw(m_CornerSprite, states);
-            m_SideSprite.Rotation = 270f;
-            m_SideSprite.Scale = new Vector2f(sideHeightScale, 1f);
-            m_SideSprite.Position = new Vector2f(0, selfBounds.Height - cornerBounds.Height);
-            target.Draw(m_SideSprite, states);
-
-            //Fill
-            m_FillSprite.Scale = new Vector2f(sideWidthScale, sideHeightScale);
-            m_FillSprite.Position = new Vector2f(cornerBounds.Width, cornerBounds.Height);
-            target.Draw(m_FillSprite, states);
+            //-----Fill-----//
+            m_Sprite.TextureRect = m_FillRect;
+            m_Sprite.Rotation = 0f;
+            m_Sprite.Scale = new Vector2f(sideWidthScale, sideHeightScale);
+            m_Sprite.Position = new Vector2f(m_CornerRect.Width, m_CornerRect.Height);
+            target.Draw(m_Sprite, states);
 
             //Move the transform so that children are drawn within the fill area, with padding applied
-            states.Transform.Translate(cornerBounds.Width + m_Padding.X, cornerBounds.Height + m_Padding.Y);
+            states.Transform.Translate(m_CornerRect.Width + m_Padding.X, m_CornerRect.Height + m_Padding.Y);
 
             foreach (var child in Children.Where(c => c.Active))
             {
@@ -138,7 +144,6 @@ namespace SFMLUI
         protected virtual void Resize()
         {
             var childsBounds = Children.Select(child => child.GetBounds()).ToList();
-            var cornerBounds = m_CornerSprite.GetLocalBounds();
 
             var lowestX = childsBounds.Min(b => b.Left);
             var lowestY = childsBounds.Min(b => b.Top);
@@ -146,11 +151,9 @@ namespace SFMLUI
             var highestY = childsBounds.Max(b => b.Bottom());
 
             var childBB = new FloatRect(lowestX, lowestY, highestX - lowestX, highestY - lowestY);
-            var totalPadding = new Vector2f(m_Padding.X + cornerBounds.Width, m_Padding.Y + cornerBounds.Height);
+            var totalPadding = new Vector2f(m_Padding.X + m_CornerRect.Width, m_Padding.Y + m_CornerRect.Height);
 
             var localRect = new FloatRect(0, 0, childBB.Width + childBB.Left + (totalPadding.X * 2), childBB.Height + childBB.Top + (totalPadding.Y * 2));
-
-            //var localRect = new FloatRect(0, 0, ((m_Padding.X + cornerBounds.Width) * 2) + (highestX - 0), ((m_Padding.Y + cornerBounds.Height) * 2) + (highestY - 0));
 
             m_WidthScale = localRect.Width / m_StartSize.X;
             m_HeightScale = localRect.Height / m_StartSize.Y;
@@ -158,8 +161,7 @@ namespace SFMLUI
 
         protected override Vector2f ToLocalCoordinates(Vector2f source)
         {
-            var cornerBounds = m_CornerSprite.GetLocalBounds();
-            return base.ToLocalCoordinates(source) - new Vector2f(cornerBounds.Width, cornerBounds.Height);
+            return base.ToLocalCoordinates(source) - new Vector2f(m_CornerRect.Width, m_CornerRect.Height);
         }
     }
 }

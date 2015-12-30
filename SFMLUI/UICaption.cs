@@ -55,6 +55,16 @@ namespace SFMLUI
             TextFunction = textFunction;
         }
 
+        public Vector2f FindCharacterPos(int index)
+        {
+            if (index < 0)
+            {
+                return new Vector2f(0, 0);
+            }
+
+            return m_Text.FindCharacterPos((uint) index);
+        }
+
         public override void Update()
         {
             if (TextFunction != null)
