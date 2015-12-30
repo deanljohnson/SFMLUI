@@ -19,7 +19,7 @@ namespace SFMLUI
         public Action<UISelectable> OnSelect { get; set; }
         public Action<UISelectable> OnUnselect { get; set; }
         public SelectableState State { get; set; } = SelectableState.Unselected;
-        public bool Selected => State == SelectableState.Selected;
+        protected bool Selected => State == SelectableState.Selected;
 
         public override bool HandleMouseMove(Vector2f mousePos)
         {
@@ -43,6 +43,11 @@ namespace SFMLUI
 
         protected virtual void SwitchState(SelectableState newState)
         {
+            if (newState == State)
+            {
+                return;
+            }
+
             State = newState;
             switch (State)
             {
@@ -61,22 +66,35 @@ namespace SFMLUI
         {
             Debug.Assert(State == SelectableState.Selected);
 
-            if (!Contains(mousePos) && !Mouse.IsButtonPressed(Mouse.Button.Left))
+            var clicked = !Mouse.IsButtonPressed(Mouse.Button.Left);
+            var mouseIsInside = Contains(mousePos);
+
+            if (!mouseIsInside)
             {
-                SwitchState(SelectableState.Unselected);
-                return true;
+                if (clicked)
+                {
+                    SwitchState(SelectableState.Unselected);
+                }
+                
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         protected bool UnselectedHandleMouseClick(Vector2f mousePos)
         {
             Debug.Assert(State == SelectableState.Unselected);
 
-            if (Contains(mousePos) && !Mouse.IsButtonPressed(Mouse.Button.Left))
+            var clicked = !Mouse.IsButtonPressed(Mouse.Button.Left);
+            var mouseIsInside = Contains(mousePos);
+
+            if (mouseIsInside)
             {
-                SwitchState(SelectableState.Selected);
+                if (clicked)
+                {
+                    SwitchState(SelectableState.Selected);
+                }
                 return true;
             }
 

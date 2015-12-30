@@ -11,7 +11,7 @@ namespace SFMLUI
     {
         public virtual bool HasKeyboardFocus { get; set; } = false;
         public bool Active { get; set; } = true;
-        public abstract void Update();
+        public virtual void Update() { }
         public abstract bool HandleMouseMove(Vector2f mousePos);
         public abstract bool HandleMouseClick(Vector2f mousePos, Mouse.Button button);
         /// <summary>

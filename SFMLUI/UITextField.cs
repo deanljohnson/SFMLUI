@@ -66,10 +66,6 @@ namespace SFMLUI
             window.KeyPressed += HandleKeyPressed;
         }
 
-        public override void Update()
-        {
-        }
-
         public override void Draw(RenderTarget target, RenderStates states)
         {
             //It's a code smell to have caret handling in a rendering method,
@@ -109,7 +105,7 @@ namespace SFMLUI
             {
                 LoseFocus();
             }
-
+            Console.WriteLine(baseResult);
             return baseResult;
         }
 

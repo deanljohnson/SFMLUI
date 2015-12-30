@@ -20,10 +20,6 @@ namespace SFMLUI
             m_Sprite = new Sprite(Texture, NormalRect);
         }
 
-        public override void Update()
-        {
-        }
-
         public override void Draw(RenderTarget target, RenderStates states)
         {
             states.Transform.Combine(Transform);
