@@ -12,66 +12,40 @@ namespace SFMLUI
     /// </summary>
     public class UICaption : UIElement
     {
-        private string m_DisplayedText;
-        private Font m_Font;
-        private Color m_FontColor;
-        private uint m_FontSize;
+        private Text m_Text { get; }
         public Func<String> TextFunction { get; set; }
 
         public Font Font
         {
-            get { return m_Font; }
-            set
-            {
-                m_Font = value;
-                m_Text.Font = m_Font;
-            }
+            get { return m_Text.Font; }
+            set { m_Text.Font = value; }
         }
 
         public uint FontSize
         {
-            get { return m_FontSize; }
-            set
-            {
-                m_FontSize = value;
-                m_Text.CharacterSize = m_FontSize;
-            }
+            get { return m_Text.CharacterSize; }
+            set { m_Text.CharacterSize = value; }
         }
 
         public Color FontColor
         {
-            get { return m_FontColor; }
-            set
-            {
-                m_FontColor = value;
-                m_Text.Color = m_FontColor;
-            }
+            get { return m_Text.Color; }
+            set { m_Text.Color = value; }
         }
 
         public string DisplayedText
         {
-            get { return m_DisplayedText; }
-            set
-            {
-                m_DisplayedText = value;
-                m_Text.DisplayedString = m_DisplayedText;
-            }
+            get { return m_Text.DisplayedString; }
+            set { m_Text.DisplayedString = value; }
         }
-
-        private Text m_Text { get; }
 
         public UICaption(String startingText, Font font, uint fontSize, Color fontColor)
         {
             Debug.Assert(font != null);
 
-            m_DisplayedText = startingText;
-            m_Font = font;
-            m_FontSize = fontSize;
-            m_FontColor = fontColor;
-
-            m_Text = new Text(m_DisplayedText, Font, FontSize)
+            m_Text = new Text(startingText, font, fontSize)
             {
-                Color = FontColor
+                Color = fontColor
             };
         }
 
@@ -98,29 +72,28 @@ namespace SFMLUI
 
         public override bool HandleMouseMove(Vector2f mousePos)
         {
-            return GetGlobalBounds().Contains(mousePos.X, mousePos.Y);
+            return GetBounds().Contains(mousePos.X, mousePos.Y);
         }
 
         public override bool HandleMouseClick(Vector2f mousePos, Mouse.Button button)
         {
-            return GetGlobalBounds().Contains(mousePos.X, mousePos.Y);
+            return GetBounds().Contains(mousePos.X, mousePos.Y);
         }
 
-        public override FloatRect GetGlobalBounds()
+        public override FloatRect GetBounds()
         {
             return Transform.TransformRect(m_Text.GetGlobalBounds());
         }
 
         public override Vector2f GetCenter()
         {
-            var selfBounds = GetGlobalBounds();
+            var selfBounds = GetBounds();
 
             return Position - Origin + new Vector2f(selfBounds.Width/2f, selfBounds.Height/2f);
         }
 
         private void UpdateText()
         {
-            DisplayedText = TextFunction();
             m_Text.DisplayedString = DisplayedText;
         }
     }

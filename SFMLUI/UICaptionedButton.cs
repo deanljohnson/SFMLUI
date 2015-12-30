@@ -5,18 +5,29 @@ namespace SFMLUI
 {
     public class UICaptionedButton : UIButton
     {
+        public bool KeepCaptionCentered { get; set; }
         public UICaption Caption { get; set; }
+
+        public UICaptionedButton(Texture texture, IntRect normalRect, UICaption caption)
+            : base(texture, normalRect)
+        {
+            Caption = caption;
+            Caption.CenterOn(this);
+        }
 
         public UICaptionedButton(Texture texture, IntRect normalRect,
             String text, Font font, uint fontSize, Color fontColor)
-            : base(texture, normalRect)
+            : this(texture, normalRect, new UICaption(text, font, fontSize, fontColor))
         {
-            Caption = new UICaption(text, font, fontSize, fontColor);
-            Caption.CenterOn(this);
         }
 
         public override void Update()
         {
+            if (KeepCaptionCentered)
+            {
+                Caption.CenterOn(this);
+            }
+
             base.Update();
 
             Caption.Update();

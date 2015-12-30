@@ -49,7 +49,7 @@ namespace SFMLUI
         public override bool HandleMouseMove(Vector2f mousePos)
         {
             var result = false;
-            var localMousePos = Vector2fInLocalCoordinates(mousePos);
+            var localMousePos = ToLocalCoordinates(mousePos);
 
             foreach (var child in Children)
             {
@@ -62,7 +62,7 @@ namespace SFMLUI
         public override bool HandleMouseClick(Vector2f mousePos, Mouse.Button button)
         {
             var result = false;
-            var localMousePos = Vector2fInLocalCoordinates(mousePos);
+            var localMousePos = ToLocalCoordinates(mousePos);
 
             foreach (var child in Children)
             {
@@ -72,9 +72,9 @@ namespace SFMLUI
             return result;
         }
 
-        public override FloatRect GetGlobalBounds()
+        public override FloatRect GetBounds()
         {
-            var childsBounds = Children.Select(child => child.GetGlobalBounds()).ToList();
+            var childsBounds = Children.Select(child => child.GetBounds()).ToList();
 
             var lowestX = childsBounds.Min(b => b.Left);
             var lowestY = childsBounds.Min(b => b.Top);
@@ -88,7 +88,7 @@ namespace SFMLUI
 
         public override Vector2f GetCenter()
         {
-            var selfBounds = GetGlobalBounds();
+            var selfBounds = GetBounds();
 
             return Position - Origin + new Vector2f(selfBounds.Width/2f, selfBounds.Height/2f);
         }
@@ -98,7 +98,7 @@ namespace SFMLUI
             Children.Add(element);
         }
 
-        protected virtual Vector2f Vector2fInLocalCoordinates(Vector2f source)
+        protected virtual Vector2f ToLocalCoordinates(Vector2f source)
         {
             return InverseTransform.TransformPoint(source);
         }

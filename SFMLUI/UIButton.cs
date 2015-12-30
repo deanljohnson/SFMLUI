@@ -6,8 +6,8 @@ namespace SFMLUI
     public class UIButton : UIClickable
     {
         public IntRect NormalRect { get; set; }
-        public IntRect HoverRect { get; set; } = new IntRect(0, 0, 0, 0);
-        public IntRect ClickRect { get; set; } = new IntRect(0, 0, 0, 0);
+        public IntRect HoverRect { get; set; }
+        public IntRect ClickRect { get; set; }
         public Texture Texture { get; set; }
         private Sprite m_Sprite { get; }
 
@@ -15,6 +15,8 @@ namespace SFMLUI
         {
             Texture = texture;
             NormalRect = normalRect;
+            HoverRect = normalRect;
+            ClickRect = normalRect;
             m_Sprite = new Sprite(Texture, NormalRect);
         }
 
@@ -29,14 +31,14 @@ namespace SFMLUI
             target.Draw(m_Sprite, states);
         }
 
-        public override FloatRect GetGlobalBounds()
+        public override FloatRect GetBounds()
         {
             return Transform.TransformRect(m_Sprite.GetGlobalBounds());
         }
 
         public override Vector2f GetCenter()
         {
-            var selfBounds = GetGlobalBounds();
+            var selfBounds = GetBounds();
 
             return Position - Origin + new Vector2f(selfBounds.Width/2f, selfBounds.Height/2f);
         }
@@ -71,10 +73,7 @@ namespace SFMLUI
                     break;
             }
 
-            if (changeRect.Width != 0f || changeRect.Height != 0f)
-            {
-                m_Sprite.TextureRect = changeRect;
-            }
+            m_Sprite.TextureRect = changeRect;
         }
     }
 }

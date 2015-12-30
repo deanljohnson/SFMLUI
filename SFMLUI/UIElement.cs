@@ -14,7 +14,13 @@ namespace SFMLUI
         public abstract void Update();
         public abstract bool HandleMouseMove(Vector2f mousePos);
         public abstract bool HandleMouseClick(Vector2f mousePos, Mouse.Button button);
-        public abstract FloatRect GetGlobalBounds();
+        /// <summary>
+        /// Returns a FloatRect representing this UIElements bounds with it's Transform applied.
+        /// </summary>
+        public abstract FloatRect GetBounds();
+        /// <summary>
+        /// Gets the center of this UIElement with it's Transform applied
+        /// </summary>
         public abstract Vector2f GetCenter();
 
         public void Move(Vector2f amount)

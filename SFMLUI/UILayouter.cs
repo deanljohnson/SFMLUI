@@ -60,8 +60,8 @@ namespace SFMLUI
         /// </summary>
         public static UIElement AlignTops(this UIElement self, UIElement other, Vector2f padding = default(Vector2f))
         {
-            var selfTop = self.GetGlobalBounds().Top;
-            var otherTop = other.GetGlobalBounds().Top;
+            var selfTop = self.GetBounds().Top;
+            var otherTop = other.GetBounds().Top;
 
             var dif = otherTop - selfTop;
 
@@ -76,8 +76,8 @@ namespace SFMLUI
         /// </summary>
         public static UIElement AlignLefts(this UIElement self, UIElement other, Vector2f padding = default(Vector2f))
         {
-            var selfLeft = self.GetGlobalBounds().Left;
-            var otherLeft = other.GetGlobalBounds().Left;
+            var selfLeft = self.GetBounds().Left;
+            var otherLeft = other.GetBounds().Left;
 
             var dif = otherLeft - selfLeft;
 
@@ -92,8 +92,8 @@ namespace SFMLUI
         /// </summary>
         public static UIElement AlignRights(this UIElement self, UIElement other, Vector2f padding = default(Vector2f))
         {
-            var selfBounds = self.GetGlobalBounds();
-            var otherBounds = other.GetGlobalBounds();
+            var selfBounds = self.GetBounds();
+            var otherBounds = other.GetBounds();
             var selfRight = selfBounds.Left + selfBounds.Width;
             var otherRight = otherBounds.Left + otherBounds.Width;
 
@@ -110,8 +110,8 @@ namespace SFMLUI
         /// </summary>
         public static UIElement AlignBottoms(this UIElement self, UIElement other, Vector2f padding = default(Vector2f))
         {
-            var selfBounds = self.GetGlobalBounds();
-            var otherBounds = other.GetGlobalBounds();
+            var selfBounds = self.GetBounds();
+            var otherBounds = other.GetBounds();
             var selfBottom = selfBounds.Top + selfBounds.Height;
             var otherBottom = otherBounds.Top + otherBounds.Height;
 
@@ -128,8 +128,8 @@ namespace SFMLUI
         /// </summary>
         public static UIElement StackOnTop(this UIElement self, UIElement other, Vector2f padding = default(Vector2f))
         {
-            var selfBounds = self.GetGlobalBounds();
-            var otherBounds = other.GetGlobalBounds();
+            var selfBounds = self.GetBounds();
+            var otherBounds = other.GetBounds();
             var selfBottom = selfBounds.Top + selfBounds.Height;
             var otherTop = otherBounds.Top;
 
@@ -146,8 +146,8 @@ namespace SFMLUI
         /// </summary>
         public static UIElement StackOnBottom(this UIElement self, UIElement other, Vector2f padding = default(Vector2f))
         {
-            var selfBounds = self.GetGlobalBounds();
-            var otherBounds = other.GetGlobalBounds();
+            var selfBounds = self.GetBounds();
+            var otherBounds = other.GetBounds();
             var selfTop = selfBounds.Top;
             var otherBottom = otherBounds.Top + otherBounds.Height;
 
@@ -164,8 +164,8 @@ namespace SFMLUI
         /// </summary>
         public static UIElement StackOnLeft(this UIElement self, UIElement other, Vector2f padding = default(Vector2f))
         {
-            var selfBounds = self.GetGlobalBounds();
-            var otherBounds = other.GetGlobalBounds();
+            var selfBounds = self.GetBounds();
+            var otherBounds = other.GetBounds();
             var selfRight = selfBounds.Left + selfBounds.Width;
             var otherLeft = otherBounds.Left;
 
@@ -182,8 +182,8 @@ namespace SFMLUI
         /// </summary>
         public static UIElement StackOnRight(this UIElement self, UIElement other, Vector2f padding = default(Vector2f))
         {
-            var selfBounds = self.GetGlobalBounds();
-            var otherBounds = other.GetGlobalBounds();
+            var selfBounds = self.GetBounds();
+            var otherBounds = other.GetBounds();
             var selfLeft = selfBounds.Left;
             var otherRight = otherBounds.Left + otherBounds.Width;
 

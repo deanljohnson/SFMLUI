@@ -11,6 +11,9 @@ namespace SFMLUI
         Unselected
     }
 
+    /// <summary>
+    /// An abstract UIElement that can be Selected and Unselected by the mouse.
+    /// </summary>
     public abstract class UISelectable : UIElement
     {
         public Action<UISelectable> OnSelect { get; set; }

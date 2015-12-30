@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using SFML.Graphics;
 using SFML.System;
@@ -7,9 +8,9 @@ using SFML.Window;
 namespace SFMLUI
 {
     /// <summary>
-    ///     The bases class for building a UI. Acts as the base container for all UIElements.
+    ///     The base class for building a UI. Acts as the base container for all UIElements.
     /// </summary>
-    public class UIBase : Drawable
+    public class UIBase : Drawable, IEnumerable<UIElement>
     {
         public bool HasKeyboardFocus
         {
@@ -17,12 +18,9 @@ namespace SFMLUI
         }
 
         private List<UIElement> m_Children { get; }
-        private Window m_Window { get; }
 
-        public UIBase(Window window)
+        public UIBase()
         {
-            Active = true;
-            m_Window = window;
             m_Children = new List<UIElement>();
         }
 
@@ -34,16 +32,25 @@ namespace SFMLUI
             }
         }
 
+        /// <summary>
+        /// Adds the given UIElement to the UIBase.
+        /// </summary>
         public void Add(UIElement element)
         {
             m_Children.Add(element);
         }
 
-        public void Remove(UIElement element)
+        /// <summary>
+        /// Removes the given UIElement to the UIBase.
+        /// </summary>
+        public bool Remove(UIElement element)
         {
-            m_Children.Remove(element);
+            return m_Children.Remove(element);
         }
 
+        /// <summary>
+        /// Posts a new mouse position to the UI. Returns whether or not any UIElements handled the event.
+        /// </summary>
         public bool PostMouseMoveToUI(Vector2f mousePos)
         {
             var result = false;
@@ -56,6 +63,9 @@ namespace SFMLUI
             return result;
         }
 
+        /// <summary>
+        /// Posts a mouse click to the UI. Returns whether or not any UIElements handled the event.
+        /// </summary>
         public bool PostMouseClickEventToUI(Vector2f mousePos, Mouse.Button button)
         {
             var result = false;
@@ -68,6 +78,9 @@ namespace SFMLUI
             return result;
         }
 
+        /// <summary>
+        /// Draws all children of this UIBase.
+        /// </summary>
         public void Draw(RenderTarget target, RenderStates states)
         {
             var view = new View(target.GetView());
@@ -81,6 +94,14 @@ namespace SFMLUI
             target.SetView(view);
         }
 
-        public bool Active { get; set; }
+        public IEnumerator<UIElement> GetEnumerator()
+        {
+            return m_Children.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable) m_Children).GetEnumerator();
+        }
     }
 }

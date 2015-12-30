@@ -7,29 +7,32 @@ using SFML.Graphics;
 
 namespace SFMLUI
 {
-    public class FontLoader
+    /// <summary>
+    /// A class that provides various helper methods to load Font objects.
+    /// </summary>
+    public static class FontLoader
     {
         private const String DATA_EXTENSION = ".ttf";
-        private String m_DataDir { get; }
 
-        public FontLoader(String path)
+        /// <summary>
+        /// Loads all fonts at the given directory
+        /// </summary>
+        public static Dictionary<String, Font> LoadAll(String path)
         {
-            m_DataDir = path;
-        }
-
-        public Dictionary<String, Font> LoadAll()
-        {
-            var dir = new DirectoryInfo(m_DataDir);
+            var dir = new DirectoryInfo(path);
             var ttfFiles = dir.GetFiles("*" + DATA_EXTENSION);
 
-            return Load(ttfFiles.Select(file => m_DataDir + file.Name));
+            return Load(ttfFiles.Select(file => path + file.Name));
         }
 
-        private static Dictionary<String, Font> Load(IEnumerable<String> ttfPaths)
+        /// <summary>
+        /// Loads all fonts pointed to by the given Strings
+        /// </summary>
+        public static Dictionary<String, Font> Load(IEnumerable<String> paths)
         {
             var fonts = new Dictionary<String, Font>();
 
-            foreach (var path in ttfPaths)
+            foreach (var path in paths)
             {
                 Debug.Assert(path.EndsWith(DATA_EXTENSION));
 

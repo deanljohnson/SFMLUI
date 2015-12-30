@@ -43,22 +43,22 @@ namespace SFMLUI
 
         public override bool HandleMouseMove(Vector2f mousePos)
         {
-            return GetGlobalBounds().Contains(mousePos.X, mousePos.Y);
+            return GetBounds().Contains(mousePos.X, mousePos.Y);
         }
 
         public override bool HandleMouseClick(Vector2f mousePos, Mouse.Button button)
         {
-            return GetGlobalBounds().Contains(mousePos.X, mousePos.Y);
+            return GetBounds().Contains(mousePos.X, mousePos.Y);
         }
 
-        public override FloatRect GetGlobalBounds()
+        public override FloatRect GetBounds()
         {
             return Transform.TransformRect(m_Sprite.GetGlobalBounds());
         }
 
         public override Vector2f GetCenter()
         {
-            var selfBounds = GetGlobalBounds();
+            var selfBounds = GetBounds();
 
             return Position - Origin + new Vector2f(selfBounds.Width/2f, selfBounds.Height/2f);
         }

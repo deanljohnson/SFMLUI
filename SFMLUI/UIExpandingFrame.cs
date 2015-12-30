@@ -29,7 +29,7 @@ namespace SFMLUI
         {
             states.Transform.Combine(Transform);
 
-            var selfBounds = GetGlobalBounds();
+            var selfBounds = GetBounds();
             var cornerBounds = m_CornerSprite.GetLocalBounds();
 
             //TopLeft & Top
@@ -88,7 +88,7 @@ namespace SFMLUI
 
             if (baseResult) return true;
 
-            return GetGlobalBounds().Contains(mousePos.X, mousePos.Y);
+            return GetBounds().Contains(mousePos.X, mousePos.Y);
         }
 
         public override bool HandleMouseClick(Vector2f mousePos, Mouse.Button button)
@@ -97,10 +97,10 @@ namespace SFMLUI
 
             if (baseResult) return true;
 
-            return GetGlobalBounds().Contains(mousePos.X, mousePos.Y);
+            return GetBounds().Contains(mousePos.X, mousePos.Y);
         }
 
-        public override FloatRect GetGlobalBounds()
+        public override FloatRect GetBounds()
         {
             float w = 0, h = 0;
 
@@ -116,7 +116,7 @@ namespace SFMLUI
 
         public override Vector2f GetCenter()
         {
-            var selfBounds = GetGlobalBounds();
+            var selfBounds = GetBounds();
 
             return Position - Origin + new Vector2f(selfBounds.Width/2f, selfBounds.Height/2f);
         }
@@ -130,7 +130,7 @@ namespace SFMLUI
 
         protected virtual void Resize()
         {
-            var childsBounds = Children.Select(child => child.GetGlobalBounds()).ToList();
+            var childsBounds = Children.Select(child => child.GetBounds()).ToList();
 
             var lowestX = childsBounds.Min(b => b.Left);
             var lowestY = childsBounds.Min(b => b.Top);
@@ -143,10 +143,10 @@ namespace SFMLUI
             m_HeightScale = localRect.Bottom()/m_SideSprite.TextureRect.Width;
         }
 
-        protected override Vector2f Vector2fInLocalCoordinates(Vector2f source)
+        protected override Vector2f ToLocalCoordinates(Vector2f source)
         {
             var cornerBounds = m_CornerSprite.GetLocalBounds();
-            return base.Vector2fInLocalCoordinates(source) - new Vector2f(cornerBounds.Width, cornerBounds.Height);
+            return base.ToLocalCoordinates(source) - new Vector2f(cornerBounds.Width, cornerBounds.Height);
         }
     }
 }
