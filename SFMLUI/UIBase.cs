@@ -44,7 +44,7 @@ namespace SFMLUI
             m_Children.Remove(element);
         }
 
-        private bool PostMouseMoveToUI(Vector2f mousePos)
+        public bool PostMouseMoveToUI(Vector2f mousePos)
         {
             var result = false;
 
@@ -56,7 +56,7 @@ namespace SFMLUI
             return result;
         }
 
-        private bool PostMouseClickEventToUI(Vector2f mousePos, Mouse.Button button)
+        public bool PostMouseClickEventToUI(Vector2f mousePos, Mouse.Button button)
         {
             var result = false;
 

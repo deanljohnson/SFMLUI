@@ -12,49 +12,49 @@ namespace SFMLUI
     /// </summary>
     public class UICaption : UIElement
     {
-        private string m_displayedText;
-        private Font m_font;
-        private Color m_fontColor;
-        private uint m_fontSize;
+        private string m_DisplayedText;
+        private Font m_Font;
+        private Color m_FontColor;
+        private uint m_FontSize;
         public Func<String> TextFunction { get; set; }
 
         public Font Font
         {
-            get { return m_font; }
+            get { return m_Font; }
             set
             {
-                m_font = value;
-                m_Text.Font = m_font;
+                m_Font = value;
+                m_Text.Font = m_Font;
             }
         }
 
         public uint FontSize
         {
-            get { return m_fontSize; }
+            get { return m_FontSize; }
             set
             {
-                m_fontSize = value;
-                m_Text.CharacterSize = m_fontSize;
+                m_FontSize = value;
+                m_Text.CharacterSize = m_FontSize;
             }
         }
 
         public Color FontColor
         {
-            get { return m_fontColor; }
+            get { return m_FontColor; }
             set
             {
-                m_fontColor = value;
-                m_Text.Color = m_fontColor;
+                m_FontColor = value;
+                m_Text.Color = m_FontColor;
             }
         }
 
         public string DisplayedText
         {
-            get { return m_displayedText; }
+            get { return m_DisplayedText; }
             set
             {
-                m_displayedText = value;
-                m_Text.DisplayedString = m_displayedText;
+                m_DisplayedText = value;
+                m_Text.DisplayedString = m_DisplayedText;
             }
         }
 
@@ -64,12 +64,12 @@ namespace SFMLUI
         {
             Debug.Assert(font != null);
 
-            m_displayedText = startingText;
-            m_font = font;
-            m_fontSize = fontSize;
-            m_fontColor = fontColor;
+            m_DisplayedText = startingText;
+            m_Font = font;
+            m_FontSize = fontSize;
+            m_FontColor = fontColor;
 
-            m_Text = new Text(m_displayedText, Font, FontSize)
+            m_Text = new Text(m_DisplayedText, Font, FontSize)
             {
                 Color = FontColor
             };
