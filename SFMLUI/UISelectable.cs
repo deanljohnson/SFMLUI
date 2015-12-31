@@ -69,17 +69,14 @@ namespace SFMLUI
             var clicked = !Mouse.IsButtonPressed(Mouse.Button.Left);
             var mouseIsInside = Contains(mousePos);
 
-            if (!mouseIsInside)
-            {
-                if (clicked)
-                {
-                    SwitchState(SelectableState.Unselected);
-                }
-                
-                return false;
-            }
+            if (mouseIsInside) return true;
 
-            return true;
+            if (clicked)
+            {
+                SwitchState(SelectableState.Unselected);
+            }
+                
+            return false;
         }
 
         protected bool UnselectedHandleMouseClick(Vector2f mousePos)
@@ -89,16 +86,13 @@ namespace SFMLUI
             var clicked = !Mouse.IsButtonPressed(Mouse.Button.Left);
             var mouseIsInside = Contains(mousePos);
 
-            if (mouseIsInside)
-            {
-                if (clicked)
-                {
-                    SwitchState(SelectableState.Selected);
-                }
-                return true;
-            }
+            if (!mouseIsInside) return false;
 
-            return false;
+            if (clicked)
+            {
+                SwitchState(SelectableState.Selected);
+            }
+            return true;
         }
     }
 }

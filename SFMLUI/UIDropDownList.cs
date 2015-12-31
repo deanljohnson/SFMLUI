@@ -39,6 +39,32 @@ namespace SFMLUI
             target.Draw(m_SelectedCaption, states);
         }
 
+        public override bool HandleMouseClick(Vector2f mousePos, Mouse.Button button)
+        {
+            var baseResult = base.HandleMouseClick(mousePos, button);
+
+            if (Selected)
+            {
+                var clicked = !Mouse.IsButtonPressed(button);
+                if (m_Extended && clicked)
+                {
+                    SetSelectedItem(mousePos);
+                    Collapse();
+                    State = SelectableState.Unselected;
+                }
+                else if (!m_Extended)
+                {
+                    Extend();
+                }
+            }
+            else if (!Selected && m_Extended)
+            {
+                Collapse();
+            }
+
+            return baseResult;
+        }
+
         public override FloatRect GetBounds()
         {
             return Transform.TransformRect(m_Box.GetGlobalBounds());
@@ -54,6 +80,21 @@ namespace SFMLUI
         protected override bool Contains(Vector2f pos)
         {
             return GetBounds().Contains(pos.X, pos.Y);
+        }
+
+        private void Extend()
+        {
+            m_Extended = true;
+        }
+
+        private void Collapse()
+        {
+            m_Extended = false;
+        }
+
+        private void SetSelectedItem(Vector2f mousePos)
+        {
+
         }
     }
 }
