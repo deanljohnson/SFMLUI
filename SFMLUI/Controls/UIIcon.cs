@@ -2,7 +2,7 @@
 using SFML.System;
 using SFML.Window;
 
-namespace SFMLUI
+namespace SFMLUI.Controls
 {
     public class UIIcon : UIElement
     {

@@ -60,18 +60,18 @@
     <Compile Include="Interfaces\ITextualElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UIBase.cs" />
-    <Compile Include="UIButton.cs" />
-    <Compile Include="UICaption.cs" />
-    <Compile Include="UICaptionedButton.cs" />
+    <Compile Include="Controls\UIButton.cs" />
+    <Compile Include="Controls\UICaption.cs" />
+    <Compile Include="Controls\UICaptionedButton.cs" />
     <Compile Include="UIClickable.cs" />
-    <Compile Include="UIDropDownList.cs" />
+    <Compile Include="Controls\UIDropDownList.cs" />
     <Compile Include="UIElement.cs" />
-    <Compile Include="UIExpandingFrame.cs" />
-    <Compile Include="UIIcon.cs" />
+    <Compile Include="Controls\UIExpandingFrame.cs" />
+    <Compile Include="Controls\UIIcon.cs" />
     <Compile Include="UILayouter.cs" />
-    <Compile Include="UIPanel.cs" />
+    <Compile Include="Controls\UIPanel.cs" />
     <Compile Include="UISelectable.cs" />
-    <Compile Include="UITextField.cs" />
+    <Compile Include="Controls\UITextField.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="libs\csfml-graphics-2.dll">

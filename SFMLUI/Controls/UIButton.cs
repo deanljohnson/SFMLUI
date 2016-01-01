@@ -1,7 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 
-namespace SFMLUI
+namespace SFMLUI.Controls
 {
     public class UIButton : UIClickable
     {

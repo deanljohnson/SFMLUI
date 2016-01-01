@@ -7,7 +7,7 @@ using SFML.System;
 using SFML.Window;
 using SFMLUI.Interfaces;
 
-namespace SFMLUI
+namespace SFMLUI.Controls
 {
     public class UIPanel : UIElement, IContainer
     {

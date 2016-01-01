@@ -2,7 +2,7 @@
 using SFML.Graphics;
 using SFMLUI.Interfaces;
 
-namespace SFMLUI
+namespace SFMLUI.Controls
 {
     /// <summary>
     /// A button with a caption that stays centered

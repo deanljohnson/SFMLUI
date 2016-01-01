@@ -5,7 +5,7 @@ using SFML.System;
 using SFML.Window;
 using SFMLUI.Interfaces;
 
-namespace SFMLUI
+namespace SFMLUI.Controls
 {
     /// <summary>
     ///     UIElement to be used for simple lines of text that do not
