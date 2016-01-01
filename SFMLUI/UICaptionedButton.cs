@@ -1,5 +1,6 @@
 ﻿using System;
 using SFML.Graphics;
+using SFMLUI.Interfaces;
 
 namespace SFMLUI
 {

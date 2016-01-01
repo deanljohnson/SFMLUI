@@ -1,6 +1,6 @@
 ﻿using SFML.Graphics;
 
-namespace SFMLUI
+namespace SFMLUI.Interfaces
 {
     public interface ITextualElement
     {

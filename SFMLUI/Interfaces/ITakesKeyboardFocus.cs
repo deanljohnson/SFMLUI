@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SFMLUI
+namespace SFMLUI.Interfaces
 {
     internal interface ITakesKeyboardFocus
     {

@@ -55,9 +55,9 @@
   <ItemGroup>
     <Compile Include="FloatRectExtensions.cs" />
     <Compile Include="FontLoader.cs" />
-    <Compile Include="IContainer.cs" />
-    <Compile Include="ITakesKeyboardFocus.cs" />
-    <Compile Include="ITextualElement.cs" />
+    <Compile Include="Interfaces\IContainer.cs" />
+    <Compile Include="Interfaces\ITakesKeyboardFocus.cs" />
+    <Compile Include="Interfaces\ITextualElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UIBase.cs" />
     <Compile Include="UIButton.cs" />
