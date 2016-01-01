@@ -8,9 +8,9 @@ namespace SFMLUI
 {
     /// <summary>
     ///     UIElement to be used for simple lines of text that do not
-    ///     require wrapping or advanced formatting.
+    ///     require advanced formatting.
     /// </summary>
-    public class UICaption : UIElement
+    public class UICaption : UIElement, ITextualElement
     {
         private Text m_Text { get; }
         public Func<String> TextFunction { get; set; }

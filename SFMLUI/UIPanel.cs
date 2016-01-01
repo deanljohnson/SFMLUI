@@ -8,7 +8,7 @@ using SFML.Window;
 
 namespace SFMLUI
 {
-    public class UIPanel : UIElement, IEnumerable<UIElement>
+    public class UIPanel : UIElement, IContainer
     {
         public override bool HasKeyboardFocus
         {
@@ -97,6 +97,26 @@ namespace SFMLUI
         public virtual void Add(UIElement element)
         {
             Children.Add(element);
+        }
+
+        public virtual bool Remove(UIElement element)
+        {
+            if (Children.Remove(element))
+            {
+                return true;
+            }
+
+            return Children.OfType<IContainer>().Any(child => child.Remove(element));
+        }
+
+        public virtual bool Contains(UIElement element)
+        {
+            if (Children.Contains(element))
+            {
+                return true;
+            }
+
+            return Children.OfType<IContainer>().Any(child => child.Contains(element));
         }
 
         protected virtual Vector2f ToLocalCoordinates(Vector2f source)

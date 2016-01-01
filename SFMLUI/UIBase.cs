@@ -10,7 +10,7 @@ namespace SFMLUI
     /// <summary>
     ///     The base class for building a UI. Acts as the base container for all UIElements.
     /// </summary>
-    public class UIBase : Drawable, IEnumerable<UIElement>
+    public class UIBase : Drawable, IContainer
     {
         public bool HasKeyboardFocus
         {
@@ -45,7 +45,22 @@ namespace SFMLUI
         /// </summary>
         public bool Remove(UIElement element)
         {
-            return m_Children.Remove(element);
+            if (m_Children.Remove(element))
+            {
+                return true;
+            }
+
+            return m_Children.OfType<IContainer>().Any(child => child.Remove(element));
+        }
+
+        public bool Contains(UIElement element)
+        {
+            if (m_Children.Contains(element))
+            {
+                return true;
+            }
+
+            return m_Children.OfType<IContainer>().Any(child => child.Contains(element));
         }
 
         /// <summary>

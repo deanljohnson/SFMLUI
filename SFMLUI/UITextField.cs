@@ -5,7 +5,7 @@ using SFML.Window;
 
 namespace SFMLUI
 {
-    public class UITextField : UISelectable, ITakesKeyboardFocus
+    public class UITextField : UISelectable, ITakesKeyboardFocus, ITextualElement
     {
         public override bool HasKeyboardFocus
         {
@@ -37,6 +37,24 @@ namespace SFMLUI
         {
             get { return m_Caption.DisplayedText; }
             set { m_Caption.DisplayedText = value; }
+        }
+
+        public Font Font
+        {
+            get { return m_Caption.Font; }
+            set { m_Caption.Font = value; }
+        }
+
+        public uint FontSize
+        {
+            get { return m_Caption.FontSize; }
+            set { m_Caption.FontSize = value; }
+        }
+
+        public Color FontColor
+        {
+            get { return m_Caption.FontColor; }
+            set { m_Caption.FontColor = value; }
         }
 
         public Action OnGainKeyboardFocus { get; set; }

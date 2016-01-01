@@ -63,7 +63,7 @@ namespace SFMLUI
         public override bool HandleMouseClick(Vector2f mousePos, Mouse.Button button)
         {
             var baseResult = base.HandleMouseClick(mousePos, button);
-
+            
             if (Selected)
             {
                 var clicked = !Mouse.IsButtonPressed(button);

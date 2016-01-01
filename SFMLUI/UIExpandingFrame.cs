@@ -161,6 +161,7 @@ namespace SFMLUI
 
         protected override Vector2f ToLocalCoordinates(Vector2f source)
         {
+            //local coordinates start from the inside corner
             return base.ToLocalCoordinates(source) - new Vector2f(m_CornerRect.Width, m_CornerRect.Height);
         }
     }

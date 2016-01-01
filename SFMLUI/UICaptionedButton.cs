@@ -3,11 +3,44 @@ using SFML.Graphics;
 
 namespace SFMLUI
 {
-    public class UICaptionedButton : UIButton
+    /// <summary>
+    /// A button with a caption that stays centered
+    /// </summary>
+    public class UICaptionedButton : UIButton, ITextualElement
     {
-        public UICaption Caption { get; set; }
+        protected UICaption Caption { get; set; }
 
-        public UICaptionedButton(Texture texture, IntRect normalRect, UICaption caption)
+        public Font Font
+        {
+            get { return Caption.Font; }
+            set
+            {
+                Caption.Font = value;
+                Caption.CenterOn(this);
+            }
+        }
+
+        public uint FontSize
+        {
+            get { return Caption.FontSize; }
+            set
+            {
+                Caption.FontSize = value;
+                Caption.CenterOn(this);
+            }
+        }
+
+        public Color FontColor
+        {
+            get { return Caption.FontColor; }
+            set
+            {
+                Caption.FontColor = value;
+                Caption.CenterOn(this);
+            }
+        }
+
+        protected UICaptionedButton(Texture texture, IntRect normalRect, UICaption caption)
             : base(texture, normalRect)
         {
             Caption = caption;
