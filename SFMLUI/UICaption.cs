@@ -92,7 +92,12 @@ namespace SFMLUI
 
         public override FloatRect GetBounds()
         {
-            return Transform.TransformRect(m_Text.GetGlobalBounds());
+            //We adjust the text bounds so that GetBounds returns the bounds for the UICaption
+            //That allows for proper displaying. textBounds left and top values correspond to the top 
+            //left of the first character but not the area it takes to display it
+            var textBounds = m_Text.GetGlobalBounds();
+            var bounds = new FloatRect(Position.X, Position.Y, textBounds.Width, textBounds.Height + textBounds.Top);
+            return Transform.TransformRect(bounds);
         }
 
         public override Vector2f GetCenter()

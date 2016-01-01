@@ -26,6 +26,9 @@ namespace SFMLUI
             return Contains(mousePos);
         }
 
+        /// <summary>
+        /// Toggles state between Selected/Unselected if the mouse click occurs within this UIElement
+        /// </summary>
         public override bool HandleMouseClick(Vector2f mousePos, Mouse.Button button)
         {
             switch (State)

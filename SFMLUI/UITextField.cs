@@ -105,7 +105,7 @@ namespace SFMLUI
             {
                 LoseFocus();
             }
-            Console.WriteLine(baseResult);
+
             return baseResult;
         }
 

@@ -61,6 +61,16 @@ namespace SFMLUIDemo
             var buttonCaption = new UICaption("Button", font, 16, Color.Black);
             buttonCaption.CenterOn(button);
 
+            var dropDownList = new UIDropDownList(new Vector2f(100, 20), new Color(240, 240, 240), font, 14, Color.Black)
+            {
+                OnSelectionChangeAction = (list, item) => Console.WriteLine(item + " was selected.")
+            };
+            dropDownList.StackOnBottom(button, new Vector2f(0, 5));
+            dropDownList.CenterHorizontally(button);
+            dropDownList.Items.Add("Item 1");
+            dropDownList.Items.Add("Item 2");
+            dropDownList.Items.Add("Item 3");
+
             var captionedButton = new UICaptionedButton(m_TestTexture, m_NormalRect, "Captioned\nButton", font, 16, Color.Black)
             {
                 HoverRect = m_HoverRect,
@@ -75,6 +85,7 @@ namespace SFMLUIDemo
             expandingFrame.Add(icon);
             expandingFrame.Add(iconCaption);
             expandingFrame.Add(button);
+            expandingFrame.Add(dropDownList);
             expandingFrame.Add(buttonCaption);
             expandingFrame.Add(captionedButton);
             expandingFrame.Add(textField);
