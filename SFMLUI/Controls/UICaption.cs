@@ -3,6 +3,7 @@ using System.Diagnostics;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using SFMLUI.BaseTypes;
 using SFMLUI.Interfaces;
 
 namespace SFMLUI.Controls

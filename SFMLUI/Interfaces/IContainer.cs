@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SFMLUI.BaseTypes;
 
 namespace SFMLUI.Interfaces
 {

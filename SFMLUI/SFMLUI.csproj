@@ -63,14 +63,14 @@
     <Compile Include="Controls\UIButton.cs" />
     <Compile Include="Controls\UICaption.cs" />
     <Compile Include="Controls\UICaptionedButton.cs" />
-    <Compile Include="UIClickable.cs" />
+    <Compile Include="BaseTypes\UIClickable.cs" />
     <Compile Include="Controls\UIDropDownList.cs" />
-    <Compile Include="UIElement.cs" />
+    <Compile Include="BaseTypes\UIElement.cs" />
     <Compile Include="Controls\UIExpandingFrame.cs" />
     <Compile Include="Controls\UIIcon.cs" />
     <Compile Include="UILayouter.cs" />
     <Compile Include="Controls\UIPanel.cs" />
-    <Compile Include="UISelectable.cs" />
+    <Compile Include="BaseTypes\UISelectable.cs" />
     <Compile Include="Controls\UITextField.cs" />
   </ItemGroup>
   <ItemGroup>

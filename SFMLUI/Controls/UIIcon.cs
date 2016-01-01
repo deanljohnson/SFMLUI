@@ -1,6 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
+using SFMLUI.BaseTypes;
 
 namespace SFMLUI.Controls
 {

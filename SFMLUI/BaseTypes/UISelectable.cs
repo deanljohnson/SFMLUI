@@ -3,7 +3,7 @@ using System.Diagnostics;
 using SFML.System;
 using SFML.Window;
 
-namespace SFMLUI
+namespace SFMLUI.BaseTypes
 {
     public enum SelectableState
     {
