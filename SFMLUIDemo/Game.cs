@@ -38,6 +38,7 @@ namespace SFMLUIDemo
             CreateTestTexture();
 
             var font = new Font("arial.ttf");
+            var textOptions = new TextOptions(font, 16, Color.Black);
 
             m_UI = new UIBase();
 
@@ -50,7 +51,7 @@ namespace SFMLUIDemo
             };
 
             var icon = new UIIcon(m_TestTexture, m_NormalRect);
-            var iconCaption = new UICaption("Icon", font, 16, Color.Black);
+            var iconCaption = new UICaption("Icon", textOptions);
             iconCaption.CenterOn(icon);
             var button = new UIButton(m_TestTexture, m_NormalRect)
             {
@@ -59,10 +60,10 @@ namespace SFMLUIDemo
             };
             button.StackOnRight(icon, new Vector2f(5, 0));
             button.CenterVertically(icon);
-            var buttonCaption = new UICaption("Button", font, 16, Color.Black);
+            var buttonCaption = new UICaption("Button", textOptions);
             buttonCaption.CenterOn(button);
 
-            var dropDownList = new UIDropDownList(new Vector2f(100, 20), new Color(240, 240, 240), font, 14, Color.Black)
+            var dropDownList = new UIDropDownList(new Vector2f(100, 20), new Color(240, 240, 240), textOptions)
             {
                 OnSelectionChangeAction = (list, item) => Console.WriteLine(item + " was selected.")
             };
@@ -72,14 +73,14 @@ namespace SFMLUIDemo
             dropDownList.Items.Add("Item 2");
             dropDownList.Items.Add("Item 3");
 
-            var captionedButton = new UICaptionedButton(m_TestTexture, m_NormalRect, "Captioned\nButton", font, 16, Color.Black)
+            var captionedButton = new UICaptionedButton(m_TestTexture, m_NormalRect, "Captioned\nButton", textOptions)
             {
                 HoverRect = m_HoverRect,
                 ClickRect = m_ClickRect
             };
             captionedButton.StackOnBottom(icon, new Vector2f(0, 5));
             captionedButton.CenterHorizontally(icon);
-            var textField = new UITextField(Window, new Vector2f(100, 20), new Color(240, 240, 240), font, 14, Color.Black);
+            var textField = new UITextField(Window, new Vector2f(100, 20), new Color(240, 240, 240), textOptions);
             textField.StackOnBottom(captionedButton, new Vector2f(0, 5));
             textField.CenterHorizontally(captionedButton);
 

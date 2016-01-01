@@ -46,6 +46,11 @@ namespace SFMLUI.Controls
             m_ExtendedCaption = new UICaption("", font, fontSize, fontColor);
         }
 
+        public UIDropDownList(Vector2f size, Color backgroundColor, TextOptions options)
+            : this(size, backgroundColor, options.Font, options.FontSize, options.Color)
+        {
+        }
+
         public override void Draw(RenderTarget target, RenderStates states)
         {
             states.Transform.Combine(Transform);

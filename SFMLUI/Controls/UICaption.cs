@@ -51,10 +51,20 @@ namespace SFMLUI.Controls
             };
         }
 
-        public UICaption(Func<string> textFunction, Font font, uint fontSize, Color fontColor)
+        public UICaption(Func<String> textFunction, Font font, uint fontSize, Color fontColor)
             : this(textFunction(), font, fontSize, fontColor)
         {
             TextFunction = textFunction;
+        }
+
+        public UICaption(String startingText, TextOptions options)
+            : this(startingText, options.Font, options.FontSize, options.Color)
+        {
+        }
+
+        public UICaption(Func<String> textFunction, TextOptions options)
+            : this(textFunction, options.Font, options.FontSize, options.Color)
+        {
         }
 
         public Vector2f FindCharacterPos(int index)

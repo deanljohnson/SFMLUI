@@ -54,6 +54,11 @@ namespace SFMLUI.Controls
         {
         }
 
+        public UICaptionedButton(Texture texture, IntRect normalRect, String text, TextOptions options)
+            : this(texture, normalRect, text, options.Font, options.FontSize, options.Color)
+        {
+        }
+
         public override void Update()
         {
             base.Update();

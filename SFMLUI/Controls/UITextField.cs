@@ -86,6 +86,11 @@ namespace SFMLUI.Controls
             window.KeyPressed += HandleKeyPressed;
         }
 
+        public UITextField(Window window, Vector2f size, Color backgroundColor, TextOptions options)
+             : this(window, size, backgroundColor, options.Font, options.FontSize, options.Color)
+        {
+        }
+
         public override void Draw(RenderTarget target, RenderStates states)
         {
             //It's a code smell to have caret handling in a rendering method,

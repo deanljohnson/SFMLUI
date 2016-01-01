@@ -59,6 +59,7 @@
     <Compile Include="Interfaces\ITakesKeyboardFocus.cs" />
     <Compile Include="Interfaces\ITextualElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextOptions.cs" />
     <Compile Include="UIBase.cs" />
     <Compile Include="Controls\UIButton.cs" />
     <Compile Include="Controls\UICaption.cs" />
