@@ -81,6 +81,10 @@ namespace SFMLUIDemo
             meterSlider.StackOnBottom(gradSlider, new Vector2f(0, 5));
             meterSlider.AlignLefts(gradSlider);
 
+            var sliderWithCircleSelector = new UISlider(new Vector2f(100, 10), new Color(220, 220, 220), new Color(50, 50, 50), 20, new Color(150, 150, 150), SliderStyle.Meter, SliderSelectorStyle.Circle);
+            sliderWithCircleSelector.StackOnBottom(meterSlider, new Vector2f(0, 10));
+            sliderWithCircleSelector.AlignLefts(meterSlider);
+
             var captionedButton = new UICaptionedButton(m_TestTexture, m_NormalRect, "Captioned\nButton", textOptions)
             {
                 HoverRect = m_HoverRect,
@@ -98,6 +102,7 @@ namespace SFMLUIDemo
             expandingFrame.Add(dropDownList);
             expandingFrame.Add(gradSlider);
             expandingFrame.Add(meterSlider);
+            expandingFrame.Add(sliderWithCircleSelector);
             expandingFrame.Add(buttonCaption);
             expandingFrame.Add(captionedButton);
             expandingFrame.Add(textField);

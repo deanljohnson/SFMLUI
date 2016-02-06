@@ -12,6 +12,12 @@ namespace SFMLUI.Controls
         Meter
     }
 
+    public enum SliderSelectorStyle
+    {
+        Rectangle,
+        Circle
+    }
+
     public class UISlider : UIElement
     {
         private bool m_HasMouseFocus { get; set; }
@@ -19,8 +25,8 @@ namespace SFMLUI.Controls
         private Color m_HighColor { get; }
 
         private VertexArray m_BackgroundShape { get; }
-        private RectangleShape m_ForegroundShape { get; }
-        private RectangleShape m_Selector { get; }
+        private Shape m_ForegroundShape { get; }
+        private Shape m_Selector { get; }
 
         private Vector2f m_Size { get; }
 
@@ -49,7 +55,7 @@ namespace SFMLUI.Controls
             }
         }
 
-        public UISlider(Vector2f size, Color lowColor, Color highColor, float selectorWidth, Color selectorColor, SliderStyle style)
+        public UISlider(Vector2f size, Color lowColor, Color highColor, float selectorWidth, Color selectorColor, SliderStyle style = SliderStyle.Meter, SliderSelectorStyle selectorStyle = SliderSelectorStyle.Rectangle)
         {
             m_Size = size;
             m_LowColor = lowColor;
@@ -57,34 +63,48 @@ namespace SFMLUI.Controls
             
             m_BackgroundShape = new VertexArray(PrimitiveType.Quads);
 
-            if (style == SliderStyle.Gradient)
+            switch (style)
             {
-                m_BackgroundShape.Append(new Vertex(new Vector2f(0, 0), m_LowColor));
-                m_BackgroundShape.Append(new Vertex(new Vector2f(m_Size.X, 0), m_HighColor));
-                m_BackgroundShape.Append(new Vertex(m_Size, m_HighColor));
-                m_BackgroundShape.Append(new Vertex(new Vector2f(0, m_Size.Y), m_LowColor));
+                case SliderStyle.Gradient:
+                    m_BackgroundShape.Append(new Vertex(new Vector2f(0, 0), m_LowColor));
+                    m_BackgroundShape.Append(new Vertex(new Vector2f(m_Size.X, 0), m_HighColor));
+                    m_BackgroundShape.Append(new Vertex(m_Size, m_HighColor));
+                    m_BackgroundShape.Append(new Vertex(new Vector2f(0, m_Size.Y), m_LowColor));
 
-                m_ForegroundShape = null;
+                    m_ForegroundShape = null;
+                    break;
+                case SliderStyle.Meter:
+                    m_BackgroundShape.Append(new Vertex(new Vector2f(0, 0), m_HighColor));
+                    m_BackgroundShape.Append(new Vertex(new Vector2f(m_Size.X, 0), m_HighColor));
+                    m_BackgroundShape.Append(new Vertex(m_Size, m_HighColor));
+                    m_BackgroundShape.Append(new Vertex(new Vector2f(0, m_Size.Y), m_HighColor));
+
+                    m_ForegroundShape = new RectangleShape(size)
+                    {
+                        FillColor = lowColor
+                    };
+                    break;
             }
-            else if (style == SliderStyle.Meter)
-            {
-                m_BackgroundShape.Append(new Vertex(new Vector2f(0, 0), m_HighColor));
-                m_BackgroundShape.Append(new Vertex(new Vector2f(m_Size.X, 0), m_HighColor));
-                m_BackgroundShape.Append(new Vertex(m_Size, m_HighColor));
-                m_BackgroundShape.Append(new Vertex(new Vector2f(0, m_Size.Y), m_HighColor));
 
-                m_ForegroundShape = new RectangleShape(size)
-                {
-                    FillColor = lowColor
-                };
+            switch (selectorStyle)
+            {
+                case SliderSelectorStyle.Rectangle:
+                    m_Selector = new RectangleShape(new Vector2f(selectorWidth, m_Size.Y))
+                    {
+                        FillColor = selectorColor,
+                        Position = new Vector2f(m_Size.X, 0),
+                        Origin = new Vector2f(selectorWidth / 2f, 0)
+                    };
+                    break;
+                case SliderSelectorStyle.Circle:
+                    m_Selector = new CircleShape(selectorWidth / 2f)
+                    {
+                        FillColor = selectorColor,
+                        Position = new Vector2f(m_Size.X, m_Size.Y / 2f),
+                        Origin = new Vector2f(selectorWidth / 2f, selectorWidth / 2f)
+                    };
+                    break;
             }
-
-            m_Selector = new RectangleShape(new Vector2f(selectorWidth, m_Size.Y))
-            {
-                FillColor = selectorColor,
-                Position = new Vector2f(m_Size.X, 0),
-                Origin = new Vector2f(selectorWidth / 2f, 0)
-            };
         }
 
         public override void Update()
