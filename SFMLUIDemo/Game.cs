@@ -73,9 +73,13 @@ namespace SFMLUIDemo
             dropDownList.Items.Add("Item 2");
             dropDownList.Items.Add("Item 3");
 
-            var slider = new UISlider(new Vector2f(100, 20), new Color(0, 0, 0), new Color(255, 0, 0), 5, new Color(150, 150, 150));
-            slider.StackOnBottom(dropDownList, new Vector2f(0, 5));
-            slider.AlignLefts(dropDownList);
+            var gradSlider = new UISlider(new Vector2f(100, 20), new Color(0, 0, 0), new Color(255, 0, 0), 5, new Color(150, 150, 150), SliderStyle.Gradient);
+            gradSlider.StackOnBottom(dropDownList, new Vector2f(0, 5));
+            gradSlider.AlignLefts(dropDownList);
+
+            var meterSlider = new UISlider(new Vector2f(100, 20), new Color(220, 220, 220), new Color(50, 50, 50), 5, new Color(150, 150, 150), SliderStyle.Meter);
+            meterSlider.StackOnBottom(gradSlider, new Vector2f(0, 5));
+            meterSlider.AlignLefts(gradSlider);
 
             var captionedButton = new UICaptionedButton(m_TestTexture, m_NormalRect, "Captioned\nButton", textOptions)
             {
@@ -92,7 +96,8 @@ namespace SFMLUIDemo
             expandingFrame.Add(iconCaption);
             expandingFrame.Add(button);
             expandingFrame.Add(dropDownList);
-            expandingFrame.Add(slider);
+            expandingFrame.Add(gradSlider);
+            expandingFrame.Add(meterSlider);
             expandingFrame.Add(buttonCaption);
             expandingFrame.Add(captionedButton);
             expandingFrame.Add(textField);

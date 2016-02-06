@@ -6,6 +6,12 @@ using SFMLUI.BaseTypes;
 
 namespace SFMLUI.Controls
 {
+    public enum SliderStyle
+    {
+        Gradient,
+        Meter
+    }
+
     public class UISlider : UIElement
     {
         private bool m_HasMouseFocus { get; set; }
@@ -13,6 +19,7 @@ namespace SFMLUI.Controls
         private Color m_HighColor { get; }
 
         private VertexArray m_BackgroundShape { get; }
+        private RectangleShape m_ForegroundShape { get; }
         private RectangleShape m_Selector { get; }
 
         private Vector2f m_Size { get; }
@@ -31,22 +38,46 @@ namespace SFMLUI.Controls
                 if (value != Value)
                 {
                     m_Selector.Position = new Vector2f(m_Size.X * value, m_Selector.Position.Y);
+
+                    if (m_ForegroundShape != null)
+                    {
+                        m_ForegroundShape.Scale = new Vector2f(value, m_ForegroundShape.Scale.Y);
+                    }
+
                     OnValueChangedAction?.Invoke(this, Value);
                 }
             }
         }
 
-        public UISlider(Vector2f size, Color lowColor, Color highColor, float selectorWidth, Color selectorColor)
+        public UISlider(Vector2f size, Color lowColor, Color highColor, float selectorWidth, Color selectorColor, SliderStyle style)
         {
             m_Size = size;
             m_LowColor = lowColor;
             m_HighColor = highColor;
             
             m_BackgroundShape = new VertexArray(PrimitiveType.Quads);
-            m_BackgroundShape.Append(new Vertex(new Vector2f(0, 0), m_LowColor));
-            m_BackgroundShape.Append(new Vertex(new Vector2f(m_Size.X, 0), m_HighColor));
-            m_BackgroundShape.Append(new Vertex(m_Size, m_HighColor));
-            m_BackgroundShape.Append(new Vertex(new Vector2f(0, m_Size.Y), m_LowColor));
+
+            if (style == SliderStyle.Gradient)
+            {
+                m_BackgroundShape.Append(new Vertex(new Vector2f(0, 0), m_LowColor));
+                m_BackgroundShape.Append(new Vertex(new Vector2f(m_Size.X, 0), m_HighColor));
+                m_BackgroundShape.Append(new Vertex(m_Size, m_HighColor));
+                m_BackgroundShape.Append(new Vertex(new Vector2f(0, m_Size.Y), m_LowColor));
+
+                m_ForegroundShape = null;
+            }
+            else if (style == SliderStyle.Meter)
+            {
+                m_BackgroundShape.Append(new Vertex(new Vector2f(0, 0), m_HighColor));
+                m_BackgroundShape.Append(new Vertex(new Vector2f(m_Size.X, 0), m_HighColor));
+                m_BackgroundShape.Append(new Vertex(m_Size, m_HighColor));
+                m_BackgroundShape.Append(new Vertex(new Vector2f(0, m_Size.Y), m_HighColor));
+
+                m_ForegroundShape = new RectangleShape(size)
+                {
+                    FillColor = lowColor
+                };
+            }
 
             m_Selector = new RectangleShape(new Vector2f(selectorWidth, m_Size.Y))
             {
@@ -136,6 +167,12 @@ namespace SFMLUI.Controls
             states.Transform.Combine(Transform);
 
             target.Draw(m_BackgroundShape, states);
+
+            if (m_ForegroundShape != null)
+            {
+                target.Draw(m_ForegroundShape, states);
+            }
+
             target.Draw(m_Selector, states);
         }
     }
