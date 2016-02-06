@@ -73,6 +73,10 @@ namespace SFMLUIDemo
             dropDownList.Items.Add("Item 2");
             dropDownList.Items.Add("Item 3");
 
+            var slider = new UISlider(new Vector2f(100, 20), new Color(0, 0, 0), new Color(255, 0, 0), 5, new Color(150, 150, 150));
+            slider.StackOnBottom(dropDownList, new Vector2f(0, 5));
+            slider.AlignLefts(dropDownList);
+
             var captionedButton = new UICaptionedButton(m_TestTexture, m_NormalRect, "Captioned\nButton", textOptions)
             {
                 HoverRect = m_HoverRect,
@@ -88,6 +92,7 @@ namespace SFMLUIDemo
             expandingFrame.Add(iconCaption);
             expandingFrame.Add(button);
             expandingFrame.Add(dropDownList);
+            expandingFrame.Add(slider);
             expandingFrame.Add(buttonCaption);
             expandingFrame.Add(captionedButton);
             expandingFrame.Add(textField);

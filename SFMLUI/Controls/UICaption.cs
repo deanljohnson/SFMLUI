@@ -108,7 +108,7 @@ namespace SFMLUI.Controls
             //That allows for proper displaying. textBounds left and top values correspond to the top 
             //left of the first character but not the area it takes to display it
             var textBounds = m_Text.GetGlobalBounds();
-            var bounds = new FloatRect(Position.X, Position.Y, textBounds.Width, textBounds.Height + textBounds.Top);
+            var bounds = new FloatRect(0, 0, textBounds.Width, textBounds.Height + textBounds.Top);
             return Transform.TransformRect(bounds);
         }
 

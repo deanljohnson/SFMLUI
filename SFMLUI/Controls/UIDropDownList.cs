@@ -16,7 +16,8 @@ namespace SFMLUI.Controls
         private UICaption m_ExtendedCaption { get; }
         private bool m_Extended { get; set; }
 
-        public int SelectedIndex {
+        public int SelectedIndex
+        {
             get { return m_SelectedIndex; }
             set
             {
@@ -28,7 +29,7 @@ namespace SFMLUI.Controls
         }
         public List<String> Items { get; set; } = new List<String>();
         public String SelectedItem => Items.Count > 0 ? Items[SelectedIndex] : "";
-        public Action<UIDropDownList, String> OnSelectionChangeAction { get; set; }
+        public Action<UIDropDownList, string> OnSelectionChangeAction { get; set; }
 
         public UIDropDownList(Vector2f size, Color backgroundColor, Font font, uint fontSize,
             Color fontColor)

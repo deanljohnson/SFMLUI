@@ -185,10 +185,15 @@ namespace SFMLUI.Controls
                 LoseFocus();
                 State = SelectableState.Unselected;
             }
-            else
+            else if (!IsSpecialCharacter(e.Unicode))
             {
                 InsertTextAtCaret(e.Unicode);
             }
+        }
+
+        private bool IsSpecialCharacter(string unicode)
+        {
+            return unicode == "\u001B"; //ESC
         }
 
         private void HandleKeyPressed(object sender, KeyEventArgs e)

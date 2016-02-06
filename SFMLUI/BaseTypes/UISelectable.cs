@@ -12,23 +12,20 @@ namespace SFMLUI.BaseTypes
     }
 
     /// <summary>
-    /// An abstract UIElement that can be Selected and Unselected by the mouse.
+    ///     An abstract UIElement that can be Selected and Unselected by the mouse.
     /// </summary>
     public abstract class UISelectable : UIElement
     {
         public Action<UISelectable> OnSelect { get; set; }
         public Action<UISelectable> OnUnselect { get; set; }
         public SelectableState State { get; set; } = SelectableState.Unselected;
-        protected bool Selected => State == SelectableState.Selected;
+        public bool Selected => State == SelectableState.Selected;
 
         public override bool HandleMouseMove(Vector2f mousePos)
         {
             return Contains(mousePos);
         }
 
-        /// <summary>
-        /// Toggles state between Selected/Unselected if the mouse click occurs within this UIElement
-        /// </summary>
         public override bool HandleMouseClick(Vector2f mousePos, Mouse.Button button)
         {
             switch (State)
